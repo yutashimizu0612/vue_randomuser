@@ -6,9 +6,9 @@ import axios from "axios";
 
 export default {
   methods: {
-    getUsers: function() {
-      axios.get(RANDOMUSERAPI, {
-        params: this.parameters
+    getUsers: function(parameters) {
+      return axios.get(RANDOMUSERAPI, {
+        params: parameters
       })
       .then(response => {
         this.users = response.data.results;

@@ -27,11 +27,10 @@
             <template v-else>
               <UserList :users="users"></UserList>
               <Pagination
-                :current-page="currentPage"
+                :current-page="parameters.page"
                 :total-pages="totalPages"
                 :max-visible-buttons="maxVisibleButtons"
                 @move-page="movePage($event)"
-                @move-page-button="movePageButton($event)"
               />
             </template>
           </template>
@@ -66,9 +65,8 @@ export default {
       isError: false,// APIエラーフラグ
       isLoading: true,
       users: [],
-      currentPage: 1,
       parameters: {
-        page: this.currentPage,
+        page: 1,
         results: 20,
         inc: "gender,name,location,email,phone,picture",
         gender: "",
@@ -78,7 +76,7 @@ export default {
     };
   },
   created: function() {
-    this.getUsers();
+    this.getUsers(this.parameters);
   },
   computed: {
     // 検索結果の有無フラグ
@@ -89,25 +87,12 @@ export default {
   methods: {
     getUsersByGender: function(gender) {
       this.parameters.gender = gender;
-      this.currentPage = 1;
-      this.getUsers();
+      this.$set(this.parameters, 'page', 1);
+      this.getUsers(this.parameters);
     },
     movePage: function(page) {
-      this.currentPage = page;
-      this.getUsers();
-    },
-    movePageButton: function(button) {
-      // Pagination.vueから渡ってくるbuttonによって挙動を制御
-      if (button === 'first') {
-        this.currentPage = 1;
-      } else if (button === 'prev') {
-        this.currentPage--;
-      } else if (button === 'next') {
-        this.currentPage++;
-      } else if (button === 'last') {
-        this.currentPage = this.totalPages;
-      }
-      this.getUsers();
+      this.$set(this.parameters, 'page', page);
+      this.getUsers(this.parameters);
     }
   }
 }

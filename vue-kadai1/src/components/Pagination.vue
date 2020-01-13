@@ -4,14 +4,14 @@
       <button
         class="pagination__button"
         :disabled="isInFirstPage()"
-        @click="movePageButton('first')"
+        @click="movePage(1)"
       >&lt;&lt;</button>
     </li>
     <li>
       <button
         class="pagination__button"
         :disabled="isInFirstPage()"
-        @click="movePageButton('prev')"
+        @click="movePage(previousPage)"
       >	&lt;</button>
     </li>
     <li v-for="page in pageRange" :key="page.number">
@@ -27,14 +27,14 @@
       <button
         class="pagination__button"
         :disabled="isInLastPage()"
-        @click="movePageButton('next')"
+        @click="movePage(nextPage)"
       >&gt;</button>
     </li>
     <li>
       <button
         class="pagination__button"
         :disabled="isInLastPage()"
-        @click="movePageButton('last')"
+        @click="movePage(totalPages)"
       >&gt;&gt;</button>
     </li>
   </ul>
@@ -74,6 +74,12 @@ export default {
           number: page
         }
       })
+    },
+    previousPage: function() {
+      return this.currentPage - 1;
+    },
+    nextPage: function() {
+      return this.currentPage + 1;
     }
   },
   methods: {
@@ -88,9 +94,6 @@ export default {
     },
     movePage: function(page) {
       this.$emit('move-page', page);
-    },
-    movePageButton: function(button) {
-      this.$emit('move-page-button', button);
     }
   }
 };
