@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { fetchUsersData } from './api/fetchUsersData'
+// コンポーネント
 import AppTitle from './components/AppTitle.vue'
 import SelectGender from './components/SelectGender.vue'
 import UserList from './components/UserList.vue'
@@ -85,8 +87,20 @@ export default {
     }
   },
   methods: {
+    getUsers: function(parameters) {
+      fetchUsersData(parameters)
+        .then(response => {
+          this.users = response.data.results;
+        })
+        .catch(() => {
+          this.isError = true;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        })
+    },
     getUsersByGender: function(gender) {
-      this.parameters.gender = gender;
+      this.$set(this.parameters, 'gender', gender)
       this.$set(this.parameters, 'page', 1);
       this.getUsers(this.parameters);
     },

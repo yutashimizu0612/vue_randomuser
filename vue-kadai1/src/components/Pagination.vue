@@ -62,7 +62,7 @@ export default {
       if (this.currentPage <= 2) {
         return 1;
       } else if(this.currentPage >= this.totalPages - 1) {
-        return this.totalPages - this.maxVisibleButtons + 1;
+        return this.totalPages - (this.maxVisibleButtons - 1);
       } else {
         return this.currentPage - 2;
       }
